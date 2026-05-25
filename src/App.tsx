@@ -109,15 +109,15 @@ export default function App() {
   }
 
   return (
-    <div className="min-h-screen bg-zinc-950 text-zinc-100 font-sans selection:bg-blue-500/30 overflow-hidden">
+    <div className="min-h-screen bg-zinc-950 text-zinc-100 font-sans selection:bg-blue-500/30">
         {connectionError && (
             <div className="bg-red-500/20 text-red-500 p-2 text-center text-sm font-medium">
                 Disconnected from server. Retrying...
             </div>
         )}
         
-        <main className="max-w-5xl mx-auto p-4 md:p-8 flex flex-col h-screen">
-          <header className="flex items-center justify-between py-6 border-b border-zinc-800 mb-8">
+        <main className="max-w-5xl mx-auto p-4 md:p-8 flex flex-col min-h-screen">
+          <header className="flex items-center justify-between py-6 border-b border-zinc-800 mb-8 shrink-0">
               <h1 className="text-2xl font-bold tracking-tighter bg-gradient-to-r from-blue-400 to-indigo-500 text-transparent bg-clip-text">
                  TypeRacer<span className="text-zinc-500">.</span>
               </h1>
@@ -132,7 +132,7 @@ export default function App() {
               </div>
           </header>
 
-          <div className="flex-1 flex flex-col min-h-0">
+          <div className="flex-1 flex flex-col">
              {room.status === "waiting" && (
                  <LobbyScreen 
                     room={room} 

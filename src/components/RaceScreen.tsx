@@ -35,6 +35,7 @@ export default function RaceScreen({ room, currentUserId }: Props) {
   const [topSpeed, setTopSpeed] = useState(0);
   const [totalErrors, setTotalErrors] = useState(0);
   const mistypesRef = useRef<Record<string, number>>({});
+  const totalStrokesRef = useRef<number>(0);
   const audioCtxRef = useRef<AudioContext | null>(null);
 
   const playSound = (type: 'type' | 'error' | 'bonus' | 'finish') => {
@@ -124,7 +125,7 @@ export default function RaceScreen({ room, currentUserId }: Props) {
                    userId: currentUserId,
                    progress: Math.min(100, (typedChars.length / phraseChars.length) * 100),
                    wpm: currentWpm,
-                   accuracy: 100, // keep previous or approx
+                   accuracy: currentUserObj?.accuracy || 100,
                    timeSpent: Math.floor((Date.now() - room.startTime) / 1000),
                    topSpeed: Math.max(topSpeed, currentWpm),
                    worstLetter: Object.entries(mistypesRef.current).sort((a,b)=>b[1]-a[1])[0]?.[0] || "",
@@ -149,6 +150,7 @@ export default function RaceScreen({ room, currentUserId }: Props) {
          }
          
          if (e.key.length === 1) {
+             totalStrokesRef.current += 1;
              let newErrorCount = totalErrors;
              let newSkippedCount = skippedCount;
              
@@ -238,7 +240,7 @@ export default function RaceScreen({ room, currentUserId }: Props) {
                         playSound('finish');
                     }
                     
-                    const accuracy = Math.round((correctCount / Math.max(1, newChars.length)) * 100);
+                    const calculatedAccuracy = Math.round(Math.max(0, (totalStrokesRef.current - newErrorCount) / Math.max(1, totalStrokesRef.current)) * 100);
                     
                     const timeElapsedMin = room.startTime ? (Date.now() - room.startTime) / 60000 : 0;
                     const actuallyTyped = Math.max(0, newChars.length - newSkippedCount);
@@ -263,7 +265,7 @@ export default function RaceScreen({ room, currentUserId }: Props) {
                         userId: currentUserId,
                         progress: Math.min(100, progress),
                         wpm: currentWpm,
-                        accuracy,
+                        accuracy: calculatedAccuracy,
                         errors: newErrorCount,
                         timeSpent: room.startTime ? Math.floor((Date.now() - room.startTime) / 1000) : 0,
                         topSpeed: Math.max(topSpeed, currentWpm),
