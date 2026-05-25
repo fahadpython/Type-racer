@@ -192,6 +192,18 @@ async function startServer() {
       }
     });
 
+    socket.on("end_race", ({ roomId }: { roomId: string }) => {
+       if (rooms[roomId] && rooms[roomId].status === "racing") {
+           rooms[roomId].status = "finished";
+           Object.values(rooms[roomId].users).forEach(u => {
+               if (!u.finished) {
+                   u.finished = true;
+               }
+           });
+           io.to(roomId).emit("room_state", rooms[roomId]);
+       }
+    });
+
     socket.on("back_to_lobby", ({ roomId }: { roomId: string }) => {
        if (rooms[roomId]) {
           rooms[roomId].status = "waiting";

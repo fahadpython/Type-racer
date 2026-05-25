@@ -431,11 +431,14 @@ export default function RaceScreen({ room, currentUserId }: Props) {
          transition={{ duration: 0.1 }}
       >
           <div className="flex items-center justify-between mb-8 pb-4 border-b border-zinc-800/50">
-              <div className="text-zinc-400 font-medium text-sm flex gap-6">
+              <div className="text-zinc-400 font-medium text-sm flex gap-4 sm:gap-6 items-center flex-wrap">
                   <span className="flex items-center gap-2"><Gauge className="w-4 h-4" /> <span className="text-blue-400 font-mono text-lg">{wpm} WPM</span></span>
                   <span className="flex items-center gap-1.5"><span className="text-zinc-500 text-xs uppercase uppercase">Errors:</span> <span className="text-red-400 font-mono text-lg">{totalErrors}</span></span>
                   <span className="flex items-center gap-1.5"><span className="text-zinc-500 text-xs uppercase uppercase">Combo:</span> <span className="text-amber-400 font-mono text-lg">{combo}x</span></span>
               </div>
+              <button onClick={() => socket.emit("end_race", { roomId: room.id })} className="text-[10px] sm:text-xs bg-red-500/10 text-red-500 hover:bg-red-500/20 px-3 py-1.5 rounded uppercase font-bold tracking-wider shrink-0 transition-colors">
+                  End Race
+              </button>
           </div>
           
           <div className="font-mono text-2xl sm:text-3xl lg:text-[2.5rem] leading-[1.6] tracking-tight whitespace-pre-wrap select-none relative break-words">
