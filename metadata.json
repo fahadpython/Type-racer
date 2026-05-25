@@ -1,0 +1,8 @@
+{
+  "name": "TypeRacer",
+  "description": "Multiplayer real-time typing racer game",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
